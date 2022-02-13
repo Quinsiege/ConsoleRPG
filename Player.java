@@ -11,6 +11,23 @@ public class Player extends Person {
     private int intellegence;
     private int stamina;
     private int CP;
+    public enum Race {  Human, Dwarf, NightElf, Gnome, Draenei, Worgen, Pandaren,
+        Orc, Undead, Tauren, Troll, BloodElf, Goblin,
+        VoidElf, LightforgedDraenei, DarkIronDwarf, KulTiran, Mechagnome,
+        Nightborne, HighmountainTauren, MagharOrc, ZandalariTroll, Vulpera
+    } private Race race;
+    private ArrayList<Proffesion> proffesions = new ArrayList<Proffesion>();
+    private ArrayList<Achievement> achievements = new ArrayList<Achievement>();
+    private ArrayList<Currency> currencies = new ArrayList<Currency>();
+
+
+    public ArrayList<Currency> getCurrencies() {
+        return currencies;
+    }
+
+    public void setCurrencies(ArrayList<Currency> currencies) {
+        this.currencies = currencies;
+    }
 
     public Race getRace() {
         return race;
@@ -35,15 +52,6 @@ public class Player extends Person {
     public void setAchievements(ArrayList<Achievement> achievements) {
         this.achievements = achievements;
     }
-
-    public enum Race {  Human, Dwarf, NightElf, Gnome, Draenei, Worgen, Pandaren,
-                        Orc, Undead, Tauren, Troll, BloodElf, Goblin,
-                        VoidElf, LightforgedDraenei, DarkIronDwarf, KulTiran, Mechagnome,
-                        Nightborne, HighmountainTauren, MagharOrc, ZandalariTroll, Vulpera
-    } private Race race;
-
-    private ArrayList<Proffesion> proffesions = new ArrayList<Proffesion>();
-    private ArrayList<Achievement> achievements = new ArrayList<Achievement>();
 
     public int getStrength() {
         return strength;

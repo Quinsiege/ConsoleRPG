@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
@@ -21,7 +22,7 @@ public class Person {
         setPositionY(positionY);
         System.out.println(getName() + " перемещается в локацию '" + getLocation().getName() + "' на координаты [" + getPositionX() + ";" + getPositionY() + "]");
     }
-    public void LookAtPerson(Person person) {
+    public void LookAt(Person person) {
         if (person.getLocation() != this.getLocation()) {
             System.out.println(this.getName() + " не может посмотреть на " + person.getName());
             return;
@@ -47,18 +48,84 @@ public class Person {
             return;
         }
     }
+    public void Drop(int bagIndex, int itemIndex) {
+        // В стаке больше одного предмета
+        if (this.getBags().get(bagIndex).getItems().get(itemIndex).size() > 1) {
+            // Удалем из стака последний предмет
+            this.getBags().get(bagIndex).getItems().get(itemIndex).remove(this.getBags().get(bagIndex).getItems().get(itemIndex).size() - 1);
+        }
+        else if (this.getBags().get(bagIndex).getItems().get(itemIndex).size() == 1) {
+            this.getBags().get(bagIndex).getItems().remove(itemIndex);
+        }
+        return;
+    }
+    public void ShiftItem(int fromBag, int fromItem, int toBag, int toItem) {
+        ArrayList<Item> temp = new ArrayList<Item>();
+        // Проверяем наличие предмета в слоте, куда переместим предмет
+        if (this.getBags().get(toBag).getItems().get(toItem).size() != 0) {
+            // Предметы идентичны
+            if (this.getBags ().get (fromBag).getItems ().get (fromItem).get (0) == this.getBags ().get (toBag).getItems ().get (toItem).get (0)) {
+                // Проверяем возможность стакнуть предметы
+                if (this.getBags ().get (toBag).getItems ().get (toItem).size () + 1 <=
+                        this.getBags ().get (toBag).getItems ().get (toItem).get (0).getLimitInStock ()) {
+                    this.getBags ().get (toBag).getItems ().get (toItem).add (this.getBags ().get (fromBag).getItems ().get (fromItem).get (0));
+                    this.getBags ().get (fromBag).getItems ().get (fromItem).remove (this.getBags ().get (fromBag).getItems ().get (fromItem).size () - 1);
+                    return;
+                }
+            }
+            else {
+                temp = this.getBags().get(fromBag).getItems().get(fromItem);
+                this.getBags().get(fromBag).getItems().set(fromItem, this.getBags().get(toBag).getItems().get(toItem));
+                this.getBags().get(toBag).getItems().set(toItem, temp);
+                return;
+            }
+        }
+        temp = this.getBags().get(fromBag).getItems().get(fromItem);
+        this.getBags().get(fromBag).getItems().set(fromItem, this.getBags().get(toBag).getItems().get(toItem));
+        this.getBags().get(toBag).getItems().set(toItem, temp);
+        return;
+    }
+    public void Take(Item item) {
+        // Проверяем каждую сумку
+        for (int i = 0; i < this.getBags().size(); i++) {
+            // Ищем предмет, который идентичен подбираемому
+            for (int j = 0; j < this.getBags().get(i).getItems().size(); j++) {
+                // Ищем непустую ячейку
+                if (this.getBags().get(i).getItems().get(j).size() > 0) {
+                    // Предмет идентичен найденному
+                    if (this.getBags().get(i).getItems().get(j).get(0) == item) {
+                        // Проверяем можно ли положить подбираемые предмет в эту связку
+                        if (this.getBags().get(i).getItems().get(j).size() + 1 <=
+                                this.getBags().get(i).getItems().get(j).get(0).getLimitInStock()
+                        ) {
+                            this.getBags().get(i).getItems().get(j).add(item);
+                            return;
+                        }
+                    }
+                }
+                // Ищем пустую ячейку
+                if (this.getBags().get(i).getItems().get(j).size() == 0) {
+                    this.getBags().get(i).getItems().get(j).add(item);
+                    return;
+                }
+            }
+        }
+        System.out.println("Невозможно подобрать добычу. Все сумки переполнены");
+        return;
+    }
+    public void TradeOffer(Person person, Item give, Item take) {
 
+    }
     public void Learn(Spell spell) {
         if (getSpells().contains(spell)) {
             System.out.println(spell.getName() + " уже изучен.");
-            return;
         }
-
-        spells.add(spell);
-        System.out.println(spell.getName() + " успешно изучен.");
+        else {
+            spells.add(spell);
+            System.out.println(spell.getName() + " успешно изучен.");
+        }
         return;
     }
-
     public float Cast(Spell spell) {
         if (!this.getSpells().contains(spell)) {
             System.out.println("Невозможно использовать это умение. Умение не выучено.");
@@ -69,11 +136,13 @@ public class Person {
             return 0;
         }
         else {
-            System.out.println("Использовано умение " + spell.getName() + ", наносящее " + spell.getDamage() + " ед. урона");
+            System.out.println("Использовано умение " + spell.getName());
             return spell.getDamage();
         }
     }
-
+    public void Use(Item item) {
+        return;
+    }
     public void Attack(Person person) {
         if (this.getFraction() == person.getFraction()) {
             System.out.println("Невозможно атаковать. Цель состоит в вашей фракции.");
@@ -112,12 +181,10 @@ public class Person {
             }
         }
     }
-
     public void ShowInfo() {
         System.out.println("Имя: " + this.getName());
         System.out.println("Здоровье: " + this.getHealth());
     }
-
     private void InputChoice() {
         System.out.print("Выбрать: ");
         setChoice(getScanner().nextInt());
@@ -126,15 +193,12 @@ public class Person {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public float getHealth() {
         return health;
     }
-
     public void setHealth(float health) {
         if (health < 0) {
             this.health = 0;
@@ -147,74 +211,70 @@ public class Person {
     public float getMana() {
         return mana;
     }
-
     public void setMana(float mana) {
         this.mana = mana;
     }
-
     public Location getLocation() {
         return location;
     }
-
     public void setLocation(Location location) {
         this.location = location;
     }
-
     public int getPositionX() {
         return positionX;
     }
-
     public void setPositionX(int positionX) {
         this.positionX = positionX;
     }
-
     public int getPositionY() {
         return positionY;
     }
-
     public void setPositionY(int positionY) {
         this.positionY = positionY;
     }
-
     public int getLevel() {
         return level;
     }
-
     public void setLevel(int level) {
         this.level = level;
     }
-
     public boolean isDead() {
         return isDead;
     }
-
     public void setDead(boolean dead) {
         isDead = dead;
     }
-
     public ArrayList<Spell> getSpells() {
         return spells;
     }
-
     public void setSpells(ArrayList<Spell> spells) {
         this.spells = spells;
     }
-
-    public ArrayList<Currency> getCurrencies() {
-        return currencies;
-    }
-
-    public void setCurrencies(ArrayList<Currency> currencies) {
-        this.currencies = currencies;
-    }
-
     public int getChoice() {
         return choice;
     }
-
     public void setChoice(int choice) {
         this.choice = choice;
     }
+    public Fraction getFraction() {
+        return fraction;
+    }
+    public void setFraction(Fraction fraction) {
+        this.fraction = fraction;
+    }
+    public Scanner getScanner() {
+        return scanner;
+    }
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+    public ArrayList<Bag> getBags() {
+        return bags;
+    }
+    public void setBags(ArrayList<Bag> bags) {
+        this.bags = bags;
+    }
+
 
     private String name;
     private float health;
@@ -226,33 +286,7 @@ public class Person {
     private int choice;
     private boolean isDead;
     private ArrayList<Spell> spells = new ArrayList<Spell>();
-    private ArrayList<Currency> currencies = new ArrayList<Currency>();
+    private ArrayList<Bag> bags = new ArrayList<Bag>();
     public enum Fraction { Alliance, Horde } private Fraction fraction;
     private Scanner scanner = new Scanner(System.in);
-    public enum React { Alliance, Horde, Both } private React react;
-
-
-    public React getReact() {
-        return react;
-    }
-
-    public void setReact(React react) {
-        this.react = react;
-    }
-
-    public Fraction getFraction() {
-        return fraction;
-    }
-
-    public void setFraction(Fraction fraction) {
-        this.fraction = fraction;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
 }
