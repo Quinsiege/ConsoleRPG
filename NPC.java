@@ -32,4 +32,5 @@ public class NPC extends Person{
     public enum Kingdom { Abberation, Critter, Demon, Dragonkin, Elemental, Giant, Humanoid, Mechanical, Beast } private Kingdom kingdom;
     public enum Classification { Normal, Elite, Rare, RareElite, Boss } private Classification classification;
     public enum Agency { Trainer, Vendor } private Agency agency;
+
 }
