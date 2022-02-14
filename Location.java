@@ -1,8 +1,8 @@
 package com.company;
 
 public class Location {
-    public Location() {
-        setName("");
+    public Location(String name) {
+        setName(name);
     }
     private String name;
 

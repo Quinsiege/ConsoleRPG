@@ -275,6 +275,21 @@ public class Person {
         this.bags = bags;
     }
 
+    public Kingdom getKingdom() {
+        return kingdom;
+    }
+
+    public void setKingdom(Kingdom kingdom) {
+        this.kingdom = kingdom;
+    }
+
+    public Classification getClassification() {
+        return classification;
+    }
+
+    public void setClassification(Classification classification) {
+        this.classification = classification;
+    }
 
     private String name;
     private float health;
@@ -288,5 +303,7 @@ public class Person {
     private ArrayList<Spell> spells = new ArrayList<Spell>();
     private ArrayList<Bag> bags = new ArrayList<Bag>();
     public enum Fraction { Alliance, Horde } private Fraction fraction;
+    public enum Kingdom { Abberation, Critter, Demon, Dragonkin, Elemental, Giant, Humanoid, Mechanical, Beast } private Kingdom kingdom;
+    public enum Classification { Normal, Elite, Rare, RareElite, Boss } private Classification classification;
     private Scanner scanner = new Scanner(System.in);
 }

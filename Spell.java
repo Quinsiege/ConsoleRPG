@@ -2,11 +2,34 @@ package com.company;
 import java.util.ArrayList;
 
 public class Spell {
-    public Spell(String name) {
-        setName(name);
-        setDamage(30);
-        setManaCost(15);
-        setRange(40);
+    public Spell(int ID) {
+        setID(ID);
+        switch (getID()) {
+            case 1:
+                setName("Аберрация");
+                setType(Type.Passive);
+                setManaCost(0);
+                setRange(0);
+                setDamage(0);
+                setDescription("Снижает урон, получаемый от темной магии и сил природы, на 1%");
+                setLevel(1);
+                setSchool(School.Physical);
+                setGCD(0);
+                break;
+            case 2:
+                setName("Аварийная система безопасности");
+                setType(Type.Passive);
+                setManaCost(0);
+                setRange(0);
+                setDamage(0);
+                setDescription("Когда ваш уровень здоровья падает ниже 20%, вы восполняете 15% максимального запаса здоровья");
+                setLevel(1);
+                setSchool(School.Physical);
+                setGCD(0);
+                break;
+            default:
+                break;
+        }
     }
 
     public ArrayList<Effect> getEffects() {
@@ -74,6 +97,7 @@ public class Spell {
         this.level = level;
     }
 
+    private int ID;
     private String name;
     private String description;
     private int level;
@@ -97,6 +121,14 @@ public class Spell {
 
     public void setDamage(float damage) {
         this.damage = damage;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public enum Type { Passive, Active } private Type type;
