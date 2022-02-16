@@ -109,6 +109,39 @@ public class Item {
     private float speed;
     private boolean isDroppable;
     private boolean isEquipped;
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Slot getSlot() {
+        return slot;
+    }
+
+    public void setSlot(Slot slot) {
+        this.slot = slot;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public enum Category { Weapon, Armor, Reagent } private Category category;
+    public enum Type { Cloth, Leather, Mail, Plate, Cloaks,
+        Daggers, FistWeapons, OneHandedAxes, OneHandMaces, OneHandSwords, Polearms, Staves,
+        TwoHandedAxes, TwoHandedMaces, TwoHandedSwords, Warglaives, Bows, Crossbows, Guns,
+        Thrown, Wands, FishingPoles, Miscellaneous } private Type type;
+    public enum Slot { Back, Chest, Feet, Finger, Hands, Head,
+        Legs, Neck, Shield, Shoulder, Trinket, Waist, Wrist, Tabard,
+        MainHand, OffHand, OneHand, Ranged, TwoHand } private Slot slot;
     public enum Quality { Poor, Common, Uncommon, Rare, Epic, Legendary, Artifact } private Quality quality;
     public enum Binds { BindsWhenPickedUp, BindsWhenEquipped } private Binds binds;
 }

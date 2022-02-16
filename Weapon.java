@@ -1,18 +1,37 @@
 package com.company;
 
 public class Weapon extends Item {
-    public Weapon(String name, Weapon.Type type, Slot slot) {
-        setName(name);
-        setType(type);
-        setSlot(slot);
-    }
-
-    public Slot getSlot() {
-        return slot;
-    }
-
-    public void setSlot(Slot slot) {
-        this.slot = slot;
+    public Weapon(int ID) {
+        setID(ID);
+        switch (getID ()) {
+            case 1:
+                setName("Алмазный меч");
+                setType(Type.OneHandMaces);
+                setSlot(Slot.MainHand);
+                setLevel(1);
+                setMinimalDamage(getLevel () * 13);
+                setMaximumDamage(getLevel () * 15);
+                setDroppable (true);
+                break;
+            case 2:
+                setName("Бронзовый меч");
+                setType(Type.OneHandMaces);
+                setSlot(Slot.OffHand);
+                setLevel(1);
+                setMinimalDamage(getLevel () * 13);
+                setMaximumDamage(getLevel () * 15);
+                break;
+            default:
+                break;
+        }
+        setDPS ((float) (getLevel () * 1.5));
+        setCategory (Category.Weapon);
+        setLimitInStock (1);
+        setRequireLevel (1);
+        setDescription ("Тип: " + getType () + "<br/>" +
+                        "Атака: " + getMinimalDamage () + " - " + getMaximumDamage () + "<br/>" +
+                        "Уровень предмета: " + getLevel () + "<br/>" +
+                        "Требуемый слот: " + getSlot());
     }
 
     public int getMinimalDamage() {
@@ -31,19 +50,15 @@ public class Weapon extends Item {
         this.maximumDamage = maximumDamage;
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public enum Slot { MainHand, OffHand, OneHand, Ranged, TwoHand } private Slot slot;
-    public enum Type {  Daggers, FistWeapons, OneHandedAxes, OneHandMaces, OneHandSwords, Polearms, Staves,
-                        TwoHandedAxes, TwoHandedMaces, TwoHandedSwords, Warglaives, Bows, Crossbows, Guns,
-                        Thrown, Wands, FishingPoles, Miscellaneous } private Type type;
+    private int ID;
     private int minimalDamage;
     private int maximumDamage;
 
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 }

@@ -1,4 +1,5 @@
 package com.company;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,6 +28,9 @@ public class Player extends Person {
         setPositionY(0);
         setBags(new ArrayList<Bag>());
         setScanner(new Scanner(System.in));
+        setBags (new ArrayList<Bag> ());
+        getBags ().add(new Bag("Основная сумка"));
+        getBags ().get (0).setLimitInStock (999);
         Location location;
         setRole(Role.Damage);
         switch (getFraction ()) {
@@ -353,6 +357,49 @@ public class Player extends Person {
             default:
                 break;
         }
+        setDescription( "<h4 style='color: red;'>Основные характеристики:</h4><br>" +
+                        "Имя персонажа: " + getName() + "<br>" +
+                        "Уровень: " + getLevel() + "<br>" +
+                        "Здоровье: " + getHealth() + "<br>" +
+                        "Мана: " + getMana() + "<br><br>" +
+                        "<h4 style='color: red;'>Второстепенные характеристики:</h4><br>" +
+                        "Сила: " + getStrength () + "<br>" +
+                        "Ловкость: " + getAgillity () + "<br>" +
+                        "Интеллект: " + getIntellegence () + "<br>" +
+                        "Выносливость: " + getStamina () + "<br><br>" +
+                        "Фракция: " + getFraction () + "<br>" +
+                        "Раса: " + getRace () + "<br>" +
+                        "Класс: " + getaClass () + "<br>" +
+                        "Пол: " + getGender () + "<br>");
+    }
+
+    public void EquipWeapon(Weapon weapon) {
+        Weapon equippedWeapon = null;
+        for (int i = 0; i <  this.getWeapons ().size (); i++) {
+            if (this.getWeapons ().get (i).getSlot () == weapon.getSlot ()) {
+                equippedWeapon =  this.getWeapons ().get (i);
+                this.getWeapons (). remove (this.getWeapons ().get (i));
+            }
+        }
+        if (equippedWeapon != null) {
+            Take (equippedWeapon);
+        }
+        this.getWeapons ().add (weapon);
+        Drop(weapon);
+    }
+    public void EquipArmor(Armor armor) {
+        Armor equippedArmor = null;
+        for (int i = 0; i <  this.getWeapons ().size (); i++) {
+            if (this.getArmor ().get (i).getSlot () == armor.getSlot ()) {
+                equippedArmor =  this.getArmor ().get (i);
+                this.getArmor (). remove (this.getArmor ().get (i));
+            }
+        }
+        if (equippedArmor != null) {
+            Take (equippedArmor);
+        }
+        this.getArmor ().add (armor);
+        Drop(armor);
     }
 
     private int strength;
@@ -406,9 +453,11 @@ public class Player extends Person {
         VoidElf, LightforgedDraenei, DarkIronDwarf, KulTiran, Mechagnome,
         Nightborne, HighmountainTauren, MagharOrc, ZandalariTroll, Vulpera
     } private Race race;
+
     public enum Gender { Male, Female } private Gender gender;
     public enum Class { Warrior, Mage, Priest, Paladin, Shaman, Rogue, Warlock, Druid, Hunter, Monk, DeathKnight, DemonHunter } private Class aClass;
     public enum Role { Damage, Heal, Tank } private Role role;
+
     private ArrayList<Proffesion> proffesions = new ArrayList<Proffesion>();
     private ArrayList<Achievement> achievements = new ArrayList<Achievement>();
     private ArrayList<Currency> currencies = new ArrayList<Currency>();

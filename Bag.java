@@ -15,15 +15,6 @@ public class Bag extends Item {
             }
         }
     }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public ArrayList<ArrayList<Item>> getItems() {
         return items;
     }
@@ -31,7 +22,5 @@ public class Bag extends Item {
     public void setItems(ArrayList<ArrayList<Item>> items) {
         this.items = items;
     }
-
-    private enum Type {} private Type type;
     private ArrayList<ArrayList<Item>> items = new ArrayList<ArrayList<Item>>();
 }

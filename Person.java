@@ -26,16 +26,13 @@ public class Person {
         if (person.getLocation() != this.getLocation()) {
             System.out.println(this.getName() + " не может посмотреть на " + person.getName());
             return;
-        }
-        else if (person.getPositionX() < (this.getPositionX() - 25) || person.getPositionX() > (this.getPositionX() + 25)) {
+        } else if (person.getPositionX() < (this.getPositionX() - 25) || person.getPositionX() > (this.getPositionX() + 25)) {
             System.out.println(this.getName() + " не может посмотреть на " + person.getName());
             return;
-        }
-        else if (person.getPositionY() < (this.getPositionY() - 25) || person.getPositionY() > (this.getPositionY() + 25)) {
+        } else if (person.getPositionY() < (this.getPositionY() - 25) || person.getPositionY() > (this.getPositionY() + 25)) {
             System.out.println(this.getName() + " не может посмотреть на " + person.getName());
             return;
-        }
-        else {
+        } else {
             System.out.println(this.getName() + " смотрит на " + person.getName());
             return;
         }
@@ -48,14 +45,17 @@ public class Person {
             return;
         }
     }
-    public void Drop(int bagIndex, int itemIndex) {
-        // В стаке больше одного предмета
-        if (this.getBags().get(bagIndex).getItems().get(itemIndex).size() > 1) {
-            // Удалем из стака последний предмет
-            this.getBags().get(bagIndex).getItems().get(itemIndex).remove(this.getBags().get(bagIndex).getItems().get(itemIndex).size() - 1);
-        }
-        else if (this.getBags().get(bagIndex).getItems().get(itemIndex).size() == 1) {
-            this.getBags().get(bagIndex).getItems().remove(itemIndex);
+    public void Drop(Item item) {
+        for (int i = 0; i < this.getBags().get(0).getItems().size(); i++) {
+            if (this.getBags ().get (0).getItems ().get(i).get (0) == item) {
+                if (this.getBags ().get (0).getItems ().get(i).size() == 1) {
+                    this.getBags ().get (0).getItems ().remove (i);
+                }
+                else if (this.getBags ().get (0).getItems ().get(i).size() > 1) {
+                    this.getBags ().get (0).getItems ().get (i).remove (0);
+                }
+                return;
+            }
         }
         return;
     }
@@ -103,11 +103,12 @@ public class Person {
                         }
                     }
                 }
-                // Ищем пустую ячейку
-                if (this.getBags().get(i).getItems().get(j).size() == 0) {
-                    this.getBags().get(i).getItems().get(j).add(item);
-                    return;
-                }
+            }
+            // Ищем пустую ячейку
+            if (this.getBags().get(i).getItems().size() < this.getBags().get(i).getLimitInStock()) {
+                this.getBags ().get(i).getItems ().add(new ArrayList<Item> ());
+                this.getBags().get(i).getItems().get(this.getBags().get(i).getItems().size() - 1).add(item);
+                return;
             }
         }
         System.out.println("Невозможно подобрать добычу. Все сумки переполнены");
@@ -139,9 +140,6 @@ public class Person {
             System.out.println("Использовано умение " + spell.getName());
             return spell.getDamage();
         }
-    }
-    public void Use(Item item) {
-        return;
     }
     public void Attack(Person person) {
         if (this.getFraction() == person.getFraction()) {
@@ -180,10 +178,6 @@ public class Person {
                 return;
             }
         }
-    }
-    public void ShowInfo() {
-        System.out.println("Имя: " + this.getName());
-        System.out.println("Здоровье: " + this.getHealth());
     }
     private void InputChoice() {
         System.out.print("Выбрать: ");
@@ -302,8 +296,18 @@ public class Person {
     private boolean isDead;
     private ArrayList<Spell> spells = new ArrayList<Spell>();
     private ArrayList<Bag> bags = new ArrayList<Bag>();
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public enum Fraction { Alliance, Horde } private Fraction fraction;
     public enum Kingdom { Abberation, Critter, Demon, Dragonkin, Elemental, Giant, Humanoid, Mechanical, Beast } private Kingdom kingdom;
     public enum Classification { Normal, Elite, Rare, RareElite, Boss } private Classification classification;
     private Scanner scanner = new Scanner(System.in);
+    private String description;
 }
